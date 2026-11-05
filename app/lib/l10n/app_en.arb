@@ -327,5 +327,8 @@
   "deleteAccount": "Delete account",
   "deleteAccountBody": "This permanently deletes your account and every note stored on our server. Notes on this device are kept as offline notes.",
   "deleteAccountConfirm": "Delete my account",
-  "accountDeleted": "Account deleted"
+  "accountDeleted": "Account deleted",
+  "exportTitle": "Export as text",
+  "exportHint": "Readable .txt files + JSON (not encrypted; locked notes are left out)",
+  "exportSaved": "Export saved"
 }

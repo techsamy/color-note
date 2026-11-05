@@ -41,7 +41,7 @@ Estimates assume 1 full-time developer; adjust to your pace.
 - [x] Local DB schema v2 (`purged`) with generated migration test
 - [x] Verified end-to-end: Dart engine ↔ real Laravel + MySQL (`test/e2e`), and account creation + sync in a real browser
 - [ ] App: Google sign-in button (needs OAuth client IDs; API side ready)
-- [ ] Export as .txt/.json zip (FR-B7)
+- [x] Export as .txt/.json zip (FR-B7) — Backup screen; locked/trashed notes excluded
 - **Needs your input:**
   - [ ] Google Cloud OAuth client IDs (Android + web) → `GOOGLE_CLIENT_IDS` in api/.env
   - [ ] Email sending (SMTP / Mailgun etc.) for password-reset mails → `MAIL_*` in api/.env

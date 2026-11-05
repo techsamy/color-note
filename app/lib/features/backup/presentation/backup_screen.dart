@@ -8,8 +8,10 @@ import 'package:huenote/core/widgets/dialogs.dart';
 import 'package:huenote/core/widgets/password_field.dart';
 import 'package:huenote/features/backup/backup_controller.dart';
 import 'package:huenote/features/backup/data/backup_service.dart';
+import 'package:huenote/features/backup/data/export_service.dart';
 import 'package:huenote/features/lock/domain/master_key_service.dart';
 import 'package:huenote/features/lock/presentation/unlock_dialog.dart';
+import 'package:huenote/features/notes/notes_providers.dart';
 import 'package:huenote/l10n/gen/app_localizations.dart';
 import 'package:intl/intl.dart';
 
@@ -53,6 +55,19 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
     } finally {
       if (mounted) setState(() => _busy = null);
     }
+  }
+
+  Future<void> _export() async {
+    final notes = await ref.read(notesRepositoryProvider).allNotes();
+    final now = ref.read(clockProvider).now();
+    final bytes = const ExportService().export(notes, now: now);
+    final date = DateFormat('yyyy-MM-dd').format(now.toLocal());
+    final saved = await FilePicker.saveFile(
+      fileName: 'huenote-export-$date.zip',
+      bytes: bytes,
+      mimeType: 'application/zip',
+    );
+    if (mounted && saved != null) showSnack(context, _l10n.exportSaved);
   }
 
   Future<void> _restore() async {
@@ -152,6 +167,16 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
               subtitle: Text(l10n.backupCreateHint),
               enabled: _busy == null,
               onTap: _create,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.description_outlined),
+              title: Text(l10n.exportTitle),
+              subtitle: Text(l10n.exportHint),
+              enabled: _busy == null,
+              onTap: _export,
             ),
           ),
           const SizedBox(height: AppSpacing.md),
