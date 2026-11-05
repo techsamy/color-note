@@ -1,14 +1,19 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:huenote/core/database/tables/notes_table.dart';
 
 part 'app_database.g.dart';
 
 /// Local SQLite database — the UI's source of truth (ADR 0002).
 ///
-/// Tables are added per feature (notes in Phase 1). Every schema change:
-/// bump [schemaVersion], add a migration step, add a migration test.
-@DriftDatabase()
+/// Schema v1 is the first shipped schema. Every later change: bump
+/// [schemaVersion], add a step in [migration], run
+/// `dart run drift_dev make-migrations`, and add a migration test.
+@DriftDatabase(
+  tables: [Notes, ColorLabels],
+  include: {'tables/notes_fts.drift'},
+)
 class AppDatabase extends _$AppDatabase {
   new([QueryExecutor? executor])
     : super(
@@ -29,6 +34,7 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (m) => m.createAll(),
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
     },

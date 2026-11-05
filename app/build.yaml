@@ -1,0 +1,17 @@
+targets:
+  $default:
+    builders:
+      drift_dev:
+        options:
+          sql:
+            dialect: sqlite
+            options:
+              version: "3.45"
+              modules: [fts5]
+          databases:
+            default: lib/core/database/app_database.dart
+          schema_dir: drift_schemas/
+          test_dir: test/drift/
+      json_serializable:
+        options:
+          explicit_to_json: true

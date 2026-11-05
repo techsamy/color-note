@@ -17,3 +17,5 @@ linter:
   rules:
     # Riverpod generator & go_router read better without these.
     lines_longer_than_80_chars: false
+    # Riverpod provider types are long/private; inference is clearer.
+    specify_nonobvious_property_types: false

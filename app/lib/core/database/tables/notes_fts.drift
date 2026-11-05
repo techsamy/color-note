@@ -1,0 +1,8 @@
+-- Full-text index (FR-L4). Maintained by NotesRepositoryImpl inside the same
+-- transaction as note writes. Locked notes are never indexed.
+CREATE VIRTUAL TABLE notes_fts USING fts5(
+  note_id UNINDEXED,
+  title,
+  body,
+  tokenize = 'unicode61 remove_diacritics 2'
+);

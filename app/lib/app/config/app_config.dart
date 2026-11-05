@@ -27,6 +27,9 @@ final class AppConfig {
     );
   }
 
+  /// Keep in sync with pubspec.yaml `version`.
+  static const appVersion = '0.1.0';
+
   final AppEnvironment environment;
   final String apiBaseUrl;
 
