@@ -38,11 +38,11 @@ android {
             dimension = "env"
             applicationIdSuffix = ".dev" // installs side by side with prod
             versionNameSuffix = "-dev"
-            resValue("string", "app_name", "HueNote Dev")
+            manifestPlaceholders["appName"] = "HueNote Dev"
         }
         create("prod") {
             dimension = "env"
-            resValue("string", "app_name", "HueNote")
+            manifestPlaceholders["appName"] = "HueNote"
         }
     }
 
