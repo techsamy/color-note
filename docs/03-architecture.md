@@ -34,7 +34,7 @@ The UI never waits for the network. The sync engine reconciles local ⇄ server 
 ### 2.1 Tech choices
 | Concern | Choice | Why |
 |---|---|---|
-| State management / DI | **Riverpod** (with code-gen) | Compile-safe DI, testable, no BuildContext coupling |
+| State management / DI | **Riverpod 3** (hand-written providers; family notifiers take args via constructor) | Compile-safe DI, testable, no BuildContext coupling |
 | Navigation | **go_router** | Declarative, deep links (notification → note) |
 | Local DB | **Drift** (SQLite) + **FTS5** | Typed queries, reactive streams, migrations, fast full-text search |
 | Models | **freezed** + **json_serializable** | Immutable entities, unions for states |

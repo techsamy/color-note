@@ -23,13 +23,13 @@ Never reorder or reuse values — they're persisted and synced. New colours get 
 |---|---|---|
 | id | TEXT PK | UUID v7, generated on device |
 | type | INTEGER | 0 = text, 1 = checklist |
-| title | TEXT | ciphertext (base64) if locked |
-| body | TEXT | text note: plain text. checklist: JSON `[{"id","text","checked","order"}]`. ciphertext if locked |
+| title | TEXT | empty if locked (title is inside the encrypted payload) |
+| body | TEXT | text note: plain text. checklist: JSON `[{"id","text","checked"}]` (array order = display order). Locked: base64(AES-GCM ciphertext‖mac) of JSON `{title, text, items}` |
 | color | INTEGER | 0–8 |
 | is_pinned | BOOL | pinned at top of list |
 | is_archived | BOOL | |
 | is_locked | BOOL | |
-| crypto_meta | TEXT NULL | JSON `{v, nonce, alg}` for locked notes |
+| crypto_meta | TEXT NULL | JSON `{v, alg, nonce, keyId}` for locked notes (`keyId` = which DEK sealed it) |
 | reminder_at | INTEGER NULL | UTC epoch ms |
 | reminder_rule | TEXT NULL | `{"freq":"daily|weekly|monthly|yearly","interval":1,"byDay":[1,3]}` |
 | reminder_all_day | BOOL | |

@@ -45,6 +45,12 @@ php artisan migrate
 - Dev preview runs as **Flutter web in Brave** (`app/scripts/brave_mobile.sh`). Android-only features (notifications, alarms, widgets, biometrics, share intents) must sit behind a domain interface with a web no-op/fallback so the web preview keeps running; verify them on a real phone.
 - `app/web/sqlite3.wasm` + `drift_worker.js` must match the resolved `sqlite3` / `drift` versions in pubspec.lock — re-download when upgrading drift.
 
+## Testing notes (Flutter)
+- Widget tests: use `test/helpers/pump_app.dart` (`pumpApp`, `settle`, `dbWrite`) — in-memory DB, fake secure store, fast KDF.
+- Drift + fake async: read/write the DB from a test only inside `tester.runAsync`, ONE write per call (a live UI query re-runs between writes and deadlocks otherwise).
+- Never `pumpAndSettle` while a spinner can be visible — use `settle()`.
+- Real-browser smoke test: build web, serve `build/web`, drive headless Chrome over CDP (needs `--enable-unsafe-swiftshader`); headless Brave hangs in this environment.
+
 ## Before saying a task is done
 - Format + analyze/lint clean, tests pass (run them; report failures honestly).
 - New logic has tests; bug fixes have a regression test.

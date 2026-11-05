@@ -12,7 +12,7 @@
 - `const` constructors wherever possible.
 - Business logic **never** in widgets — it lives in Riverpod Notifiers / use cases.
 - Controllers expose immutable state (`freezed`) — `AsyncValue<T>` for async.
-- Repositories return `Future<Result<T>>` / `Stream<T>`; never throw across layers — map exceptions to `Failure` in data layer.
+- Repositories return `Future<T>` / `Stream<T>`. *Expected* failures are typed (e.g. `WrongKeyException`, `InvalidBackupException`, sealed `RestoreOutcome`) and handled by the caller; *unexpected* ones (DB corruption) surface as `AsyncValue.error` in the UI. Never let a plaintext locked note reach storage (`NoteMapper` throws).
 - Inject time (`Clock`) and ID generation (`IdGenerator`) via providers so tests are deterministic.
 
 ### Drift

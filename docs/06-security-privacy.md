@@ -12,7 +12,7 @@
 
 ## 2. Rules
 1. **Never log** note titles/bodies, passwords, tokens or keys — in app or server.
-2. Crypto: only AES-256-GCM (random 96-bit nonce per encryption) and Argon2id (m ≥ 64 MiB, t ≥ 3, p = 1; tune for device). No custom crypto.
+2. Crypto: only AES-256-GCM (random 96-bit nonce per encryption) and Argon2id (default m = 19 MiB, t = 2, p = 1 — OWASP baseline; ~0.3 s in the Dart VM, 64 MiB/t=3 measured ~1.1 s and slower on phones/web. Params are stored with every key/backup, so they can be raised later without breaking old data). No custom crypto.
 3. Store secrets only in `flutter_secure_storage` (Keystore-backed).
 4. Server validates every input via FormRequest; every query scoped by `user_id` (policies + global scope).
 5. Dependencies: Dependabot/Renovate on; `composer audit` and `flutter pub outdated` in CI.
