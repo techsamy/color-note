@@ -1,0 +1,39 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "App: run in Brave (mobile window)",
+      "type": "shell",
+      "command": "flutter run -d chrome",
+      "options": {
+        "cwd": "${workspaceFolder}/app",
+        "env": { "CHROME_EXECUTABLE": "${workspaceFolder}/app/scripts/brave_mobile.sh" }
+      },
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "App: codegen (l10n + build_runner)",
+      "type": "shell",
+      "command": "flutter gen-l10n && dart run build_runner build -d",
+      "options": { "cwd": "${workspaceFolder}/app" },
+      "problemMatcher": []
+    },
+    {
+      "label": "API: serve (http://127.0.0.1:8000)",
+      "type": "shell",
+      "command": "php artisan serve",
+      "options": { "cwd": "${workspaceFolder}/api" },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Check all (lint + tests)",
+      "type": "shell",
+      "command": "(cd app && dart format --output=none --set-exit-if-changed lib test && flutter analyze && flutter test) && (cd api && composer lint && composer test)",
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": "test",
+      "problemMatcher": []
+    }
+  ]
+}

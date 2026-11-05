@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "HueNote (Brave mobile window)",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "app",
+      "program": "lib/main.dart",
+      "deviceId": "chrome",
+      "flutterMode": "debug",
+      "env": {
+        "CHROME_EXECUTABLE": "${workspaceFolder}/app/scripts/brave_mobile.sh"
+      }
+    },
+    {
+      "name": "HueNote (Android device, dev flavor)",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "app",
+      "program": "lib/main.dart",
+      "args": ["--flavor", "dev"]
+    }
+  ]
+}

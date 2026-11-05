@@ -1,0 +1,19 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - lib/l10n/gen/**
+    - web/**
+  errors:
+    # Internal app, not a published package.
+    public_member_api_docs: ignore
+
+linter:
+  rules:
+    # Riverpod generator & go_router read better without these.
+    lines_longer_than_80_chars: false

@@ -1,0 +1,16 @@
+{
+  "@@locale": "en",
+  "appTitle": "HueNote",
+  "notesTitle": "Notes",
+  "emptyNotesTitle": "No notes yet",
+  "emptyNotesBody": "Your notes and checklists will appear here.",
+  "colorRed": "Red",
+  "colorOrange": "Orange",
+  "colorYellow": "Yellow",
+  "colorGreen": "Green",
+  "colorBlue": "Blue",
+  "colorPurple": "Purple",
+  "colorBlack": "Black",
+  "colorGrey": "Grey",
+  "colorWhite": "White"
+}

@@ -1,0 +1,18 @@
+# OS / editors
+.DS_Store
+.idea/
+*.iml
+.vscode/*
+!.vscode/extensions.json
+
+# Secrets — never commit (docs/06-security-privacy.md)
+*.jks
+*.keystore
+key.properties
+google-services.json
+GoogleService-Info.plist
+.env
+.env.*
+!.env.example
+!.vscode/launch.json
+!.vscode/tasks.json
