@@ -2,50 +2,81 @@
 
 declare(strict_types=1);
 
+use App\Contracts\GoogleIdentity;
+use App\Contracts\GoogleIdTokenVerifier;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
-/*
-|--------------------------------------------------------------------------
-| Test Case
-|--------------------------------------------------------------------------
-|
-| The closure you provide to your test functions is always bound to a specific PHPUnit test
-| case class. By default, that class is "PHPUnit\Framework\TestCase". Of course, you may
-| need to change it using the "pest()" function to bind a different classes or traits.
-|
-*/
-
 pest()->extend(TestCase::class)
- // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->use(RefreshDatabase::class)
     ->in('Feature');
 
-/*
-|--------------------------------------------------------------------------
-| Expectations
-|--------------------------------------------------------------------------
-|
-| When you're writing tests, you often need to check that values meet certain conditions. The
-| "expect()" function gives you access to a set of "expectations" methods that you can use
-| to assert different things. Of course, you may extend the Expectation API at any time.
-|
-*/
-
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
-});
-
-/*
-|--------------------------------------------------------------------------
-| Functions
-|--------------------------------------------------------------------------
-|
-| While Pest is very powerful out-of-the-box, you may have some testing code specific to your
-| project that you don't want to repeat in every file. Here you can also expose helpers as
-| global functions to help you to reduce the number of lines of code in your test files.
-|
-*/
-
-function something()
+/** Acts as a signed-in user on a known device. */
+function signIn(?User $user = null, ?string $deviceUuid = null): User
 {
-    // ..
+    $user ??= User::factory()->create();
+    Sanctum::actingAs($user);
+    test()->withHeader('X-Device-Id', $deviceUuid ?? (string) Str::uuid());
+
+    return $user;
+}
+
+/** Replaces Google verification: token "good:<sub>:<email>" is valid. */
+function fakeGoogle(bool $emailVerified = true): void
+{
+    app()->instance(GoogleIdTokenVerifier::class, new class($emailVerified) implements GoogleIdTokenVerifier
+    {
+        public function __construct(private readonly bool $verified) {}
+
+        public function verify(string $idToken): ?GoogleIdentity
+        {
+            $parts = explode(':', $idToken);
+            if (count($parts) !== 3 || $parts[0] !== 'good') {
+                return null;
+            }
+
+            return new GoogleIdentity($parts[1], $parts[2], $this->verified, 'Google User');
+        }
+    });
+}
+
+/**
+ * A valid flat note payload for sync.
+ *
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
+ */
+function noteData(array $overrides = []): array
+{
+    return [
+        'type' => 0,
+        'title' => 'Title',
+        'body' => 'Body',
+        'color' => 2,
+        'is_pinned' => false,
+        'is_archived' => false,
+        'is_locked' => false,
+        'crypto_meta' => null,
+        'reminder_at' => null,
+        'reminder_rule' => null,
+        'reminder_all_day' => false,
+        'status_bar_pinned' => false,
+        'calendar_date' => null,
+        'created_at' => 1_730_800_000_000,
+        'updated_at' => 1_730_800_500_000,
+        'deleted_at' => null,
+        ...$overrides,
+    ];
+}
+
+/**
+ * @param  array<string, mixed>  $data
+ * @return array<string, mixed>
+ */
+function noteChange(string $id, int $baseVersion, array $data = []): array
+{
+    return ['entity' => 'note', 'id' => $id, 'base_version' => $baseVersion, 'data' => noteData($data)];
 }

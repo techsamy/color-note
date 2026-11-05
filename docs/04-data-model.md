@@ -71,12 +71,8 @@ users (
   email_verified_at TIMESTAMP NULL,
   feed_seq BIGINT UNSIGNED DEFAULT 0,  -- last seq in this user's change feed
   -- master password (server never sees password or plain key):
-  kdf_salt VARBINARY(32) NULL,
-  kdf_params JSON NULL,                -- {alg:"argon2id", m, t, p}
-  wrapped_dek TEXT NULL,               -- DEK encrypted with password-derived KEK
-  recovery_wrapped_dek TEXT NULL,      -- DEK encrypted with recovery-key KEK (optional)
-  key_version INT DEFAULT 0,           -- bump on password change
-  fcm_tokens via devices table,
+  key_material JSON NULL,              -- app's KeyMaterial: keyId, kdf, wrappedDek, wrapNonce, recovery*
+  key_version INT UNSIGNED DEFAULT 0,  -- bump on every replace (optimistic concurrency)
   created_at, updated_at, deleted_at
 )
 
@@ -95,6 +91,7 @@ notes (
   is_locked BOOLEAN, crypto_meta JSON NULL,
   calendar_date DATE NULL,
   client_created_at BIGINT, client_updated_at BIGINT, deleted_at BIGINT NULL,
+  purged BOOLEAN DEFAULT 0,            -- deleted forever: content wiped, tombstone kept
   version INT UNSIGNED,                -- +1 per change, used for conflict detection
   updated_by_user_id BIGINT NULL, updated_by_device_id BIGINT NULL
 )
@@ -147,3 +144,7 @@ zip
 └─ data.bin        AES-GCM( JSON { notes:[...], color_labels:[...], settings:{...} } )
 ```
 Always bump `format_version` on change and keep readers for all previous versions.
+
+> Implementation note: `note_members`, `change_log` and `color_labels` use an auto-increment `id` plus a
+> UNIQUE key on the columns listed as primary key above (Eloquent works poorly with composite keys).
+> Migrations: `api/database/migrations/2026_11_06_*`.

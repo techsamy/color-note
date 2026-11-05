@@ -37,4 +37,10 @@ return [
         ],
     ],
 
+    // Google sign-in: comma-separated OAuth client IDs (Android + web) whose
+    // ID tokens we accept. Empty = Google sign-in disabled.
+    'google' => [
+        'client_ids' => array_values(array_filter(array_map('trim', explode(',', (string) env('GOOGLE_CLIENT_IDS', ''))))),
+    ],
+
 ];

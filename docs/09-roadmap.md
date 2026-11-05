@@ -31,10 +31,16 @@ Estimates assume 1 full-time developer; adjust to your pace.
 - [ ] Internal testing release (needs Play Console account, icon, upload key, privacy policy)
 
 ## Phase 2 — Accounts & Sync (weeks 7–10) → v1.0 public
-- [ ] Auth API + app screens (FR-B2)
-- [ ] Sync API + engine + conflict copies (FR-B3..B5)
-- [ ] Export, account deletion, privacy policy page (FR-B6, B7)
-- [ ] Server deploy (staging + prod), backups, monitoring
+- [x] API: auth — email/password, Google ID-token sign-in (verifier + account linking), logout, password reset, per-device tokens, rate limits, app-version gate (FR-B2)
+- [x] API: sync push/pull — per-note versions, conflicts, per-user change feed (sharing-ready fan-out), tombstones + purge, colour labels (FR-B3, B4)
+- [x] API: master-key storage with optimistic concurrency (FR-S5), account deletion (FR-B6), device list/revoke
+- [ ] App: account screens (sign in / sign up / Google), sync engine (outbox, push/pull, conflict copies), key sync, sync status (FR-B2..B5, B8..B10)
+- [ ] Export as .txt/.json zip (FR-B7)
+- **Needs your input:**
+  - [ ] Google Cloud OAuth client IDs (Android + web) → `GOOGLE_CLIENT_IDS` in api/.env
+  - [ ] Email sending (SMTP / Mailgun etc.) for password-reset mails → `MAIL_*` in api/.env
+  - [ ] Hosting for the API (this server vs VPS) + domain → staging + prod, backups, monitoring
+  - [ ] Privacy policy + account-deletion web page
 - [ ] Closed testing 14 days → production
 
 ## Phase 3 — v1.1 (weeks 11–14)
