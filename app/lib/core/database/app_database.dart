@@ -7,7 +7,8 @@ part 'app_database.g.dart';
 
 /// Local SQLite database — the UI's source of truth (ADR 0002).
 ///
-/// Schema v1 is the first shipped schema. Every later change: bump
+/// v1: first schema. v2: notes.purged (sync tombstones).
+/// Every later change: bump
 /// [schemaVersion], add a step in [migration], run
 /// `dart run drift_dev make-migrations`, and add a migration test.
 @DriftDatabase(
@@ -30,11 +31,14 @@ class AppDatabase extends _$AppDatabase {
       );
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
+    onUpgrade: (m, from, to) async {
+      if (from < 2) await m.addColumn(notes, notes.purged);
+    },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
     },

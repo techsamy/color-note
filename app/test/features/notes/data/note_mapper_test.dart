@@ -30,6 +30,7 @@ Note roundTrip(Note n) {
       baseVersion: 0,
       dirty: true,
       myPermission: 0,
+      purged: false,
     ),
   );
 }

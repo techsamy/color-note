@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:huenote/core/database/app_database.dart';
 import 'package:huenote/core/utils/clock.dart';
 import 'package:huenote/core/utils/id_generator.dart';
+import 'package:huenote/features/notes/data/fts_index.dart';
 import 'package:huenote/features/notes/data/note_mapper.dart';
 import 'package:huenote/features/notes/domain/note.dart';
 import 'package:huenote/features/notes/domain/note_color.dart';
@@ -23,11 +24,13 @@ final class NotesRepositoryImpl implements NotesRepository {
   Stream<List<Note>> watchNotes(NoteQuery query) {
     final select = _db.select(_notes)
       ..where((n) {
-        var e = switch (query.section) {
-          NoteSection.notes => n.deletedAt.isNull() & n.isArchived.not(),
-          NoteSection.archive => n.deletedAt.isNull() & n.isArchived,
-          NoteSection.trash => n.deletedAt.isNotNull(),
-        };
+        var e =
+            n.purged.not() &
+            switch (query.section) {
+              NoteSection.notes => n.deletedAt.isNull() & n.isArchived.not(),
+              NoteSection.archive => n.deletedAt.isNull() & n.isArchived,
+              NoteSection.trash => n.deletedAt.isNotNull(),
+            };
         if (query.colors.isNotEmpty) {
           e &= n.color.isIn(query.colors.map((c) => c.value));
         }
@@ -72,7 +75,8 @@ final class NotesRepositoryImpl implements NotesRepository {
     return _db
         .customSelect(
           'SELECT n.* FROM notes n '
-          'WHERE n.deleted_at IS NULL AND n.is_locked = 0 $colorSql '
+          'WHERE n.deleted_at IS NULL AND n.is_locked = 0 AND n.purged = 0 '
+          '$colorSql '
           'AND n.id IN (SELECT note_id FROM notes_fts WHERE notes_fts MATCH ?) '
           'ORDER BY n.updated_at DESC',
           variables: [Variable.withString(match)],
@@ -122,7 +126,7 @@ final class NotesRepositoryImpl implements NotesRepository {
 
   @override
   Future<List<Note>> allNotes() async =>
-      _toNotes(await _db.select(_notes).get());
+      _toNotes(await (_db.select(_notes)..where((n) => n.purged.not())).get());
 
   @override
   Future<ImportResult> importNotes(List<Note> notes) =>
@@ -148,21 +152,7 @@ final class NotesRepositoryImpl implements NotesRepository {
         return ImportResult(added: added, updated: updated, skipped: skipped);
       });
 
-  Future<void> _reindex(Note note) async {
-    await (_db.delete(
-      _db.notesFts,
-    )..where((f) => f.noteId.equals(note.id))).go();
-    if (note.isLocked) return; // never index locked content
-    await _db
-        .into(_db.notesFts)
-        .insert(
-          NotesFtsCompanion.insert(
-            noteId: note.id,
-            title: note.title,
-            body: note.plainBody,
-          ),
-        );
-  }
+  Future<void> _reindex(Note note) => FtsIndex.reindex(_db, note);
 
   Future<void> _update(Iterable<String> ids, NotesCompanion change) =>
       (_db.update(_notes)..where((n) => n.id.isIn(ids))).write(
@@ -196,8 +186,6 @@ final class NotesRepositoryImpl implements NotesRepository {
   Future<void> restoreFromTrash(Iterable<String> ids) =>
       _update(ids, const NotesCompanion(deletedAt: Value(null)));
 
-  // Phase 2: notes that were already synced must become server tombstones
-  // instead of disappearing locally (docs/03 §3.2).
   @override
   Future<void> deleteForever(Iterable<String> ids) =>
       _deleteWhere((n) => n.id.isIn(ids));
@@ -211,13 +199,38 @@ final class NotesRepositoryImpl implements NotesRepository {
     return _deleteWhere((n) => n.deletedAt.isSmallerThanValue(cutoff));
   }
 
+  /// Never-synced notes are deleted outright. Synced ones become purged
+  /// tombstones (content wiped) so the deletion reaches other devices;
+  /// the sync engine removes them after the server confirms.
   Future<int> _deleteWhere(Expression<bool> Function($NotesTable) filter) =>
       _db.transaction(() async {
-        final count = await (_db.delete(_notes)..where(filter)).go();
+        final deleted = await (_db.delete(
+          _notes,
+        )..where((n) => filter(n) & n.baseVersion.equals(0))).go();
+        final purged =
+            await (_db.update(_notes)..where(
+                  (n) =>
+                      filter(n) &
+                      n.baseVersion.isBiggerThanValue(0) &
+                      n.purged.not(),
+                ))
+                .write(
+                  NotesCompanion(
+                    title: const Value(''),
+                    body: const Value(''),
+                    isLocked: const Value(false),
+                    cryptoMeta: const Value(null),
+                    purged: const Value(true),
+                    deletedAt: Value(_nowMs),
+                    updatedAt: Value(_nowMs),
+                    dirty: const Value(true),
+                  ),
+                );
         await _db.customStatement(
-          'DELETE FROM notes_fts WHERE note_id NOT IN (SELECT id FROM notes)',
+          'DELETE FROM notes_fts WHERE note_id NOT IN '
+          '(SELECT id FROM notes WHERE purged = 0)',
         );
-        return count;
+        return deleted + purged;
       });
 
   @override
@@ -244,7 +257,7 @@ final class NotesRepositoryImpl implements NotesRepository {
     final count = _notes.id.count();
     final q = _db.selectOnly(_notes)
       ..addColumns([count])
-      ..where(_notes.isLocked);
+      ..where(_notes.isLocked & _notes.purged.not());
     return q.getSingle().then((row) => row.read(count) ?? 0);
   }
 

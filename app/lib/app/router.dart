@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:huenote/features/auth/presentation/account_screen.dart';
 import 'package:huenote/features/backup/presentation/backup_screen.dart';
 import 'package:huenote/features/lock/presentation/master_password_screen.dart';
 import 'package:huenote/features/notes/domain/note_query.dart';
@@ -22,6 +23,7 @@ abstract final class Routes {
   static const settings = '/settings';
   static const colorLabels = '/settings/labels';
   static const backup = '/settings/backup';
+  static const account = '/settings/account';
 
   static String note(String id) => '/note/$id';
 
@@ -67,6 +69,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, _) => const ColorLabelsScreen(),
       ),
       GoRoute(path: Routes.backup, builder: (_, _) => const BackupScreen()),
+      GoRoute(path: Routes.account, builder: (_, _) => const AccountScreen()),
       GoRoute(
         path: '/settings/master-password',
         builder: (_, state) => MasterPasswordScreen(

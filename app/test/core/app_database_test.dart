@@ -10,7 +10,7 @@ void main() {
     final db = AppDatabase(NativeDatabase.memory());
     addTearDown(db.close);
 
-    expect(db.schemaVersion, 1);
+    expect(db.schemaVersion, 2);
     final row = await db.customSelect('PRAGMA foreign_keys').getSingle();
     expect(row.read<int>('foreign_keys'), 1);
   });

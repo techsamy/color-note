@@ -32,6 +32,7 @@ dependencies:
   collection: ^1.19.1
   cryptography: ^2.9.0
   cryptography_flutter: ^2.3.4
+  dio: ^5.11.1
   drift: ^2.35.3
   drift_flutter: ^0.3.1
   file_picker: ^13.3.2

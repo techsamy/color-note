@@ -120,10 +120,20 @@ class LockController extends AsyncNotifier<LockState> {
     }
   }
 
-  /// Used by backup restore when this device has no master password yet.
-  Future<void> adoptMaterial(KeyMaterial material) async {
+  /// Replaces the key material (backup restore, account key sync).
+  /// Stays unlocked when [dek] is given, or when the key id is unchanged
+  /// (same DEK, only the password wrapping changed).
+  Future<void> adoptMaterial(KeyMaterial material, {SecretKey? dek}) async {
     await _store.write(material);
-    state = AsyncData(LockState(material: material));
+    final current = _current;
+    final keep = current.material?.keyId == material.keyId ? current.dek : null;
+    state = AsyncData(LockState(material: material, dek: dek ?? keep));
+  }
+
+  /// Forget the master key on this device (sign-out with "remove notes").
+  Future<void> clear() async {
+    await _store.clear();
+    state = const AsyncData(LockState());
   }
 
   Future<Note> seal(Note note) {

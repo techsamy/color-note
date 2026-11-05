@@ -29,6 +29,10 @@ class Notes extends Table {
   IntColumn get createdAt => integer()();
   IntColumn get updatedAt => integer()();
   IntColumn get deletedAt => integer().nullable()();
+
+  /// v2: deleted forever after being synced — content wiped, row kept until
+  /// the tombstone is pushed, then removed. Hidden from every list.
+  BoolColumn get purged => boolean().withDefault(const Constant(false))();
   IntColumn get baseVersion => integer().withDefault(const Constant(0))();
   BoolColumn get dirty => boolean().withDefault(const Constant(true))();
   TextColumn get ownerUserUuid => text().nullable()();

@@ -8,6 +8,8 @@ analyzer:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
     - lib/l10n/gen/**
+    - lib/core/database/app_database.steps.dart
+    - test/drift/*/generated/**
     - web/**
   errors:
     # Internal app, not a published package.

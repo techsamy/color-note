@@ -5,6 +5,7 @@ import 'package:huenote/app/config/app_config.dart';
 import 'package:huenote/app/router.dart';
 import 'package:huenote/app/theme/note_palette.dart';
 import 'package:huenote/core/widgets/dialogs.dart';
+import 'package:huenote/features/auth/auth_providers.dart';
 import 'package:huenote/features/lock/lock_providers.dart';
 import 'package:huenote/features/notes/notes_providers.dart';
 import 'package:huenote/features/notes/presentation/color_picker_sheet.dart';
@@ -24,6 +25,7 @@ class SettingsScreen extends ConsumerWidget {
     final ctrl = ref.read(settingsProvider.notifier);
     final lock = ref.watch(lockControllerProvider).value;
     final labels = ref.watch(colorLabelsProvider).value ?? const {};
+    final account = ref.watch(authControllerProvider).value;
 
     String themeLabel(AppThemeMode m) => switch (m) {
       AppThemeMode.system => l10n.themeSystem,
@@ -43,6 +45,12 @@ class SettingsScreen extends ConsumerWidget {
       appBar: AppBar(title: Text(l10n.settingsTitle)),
       body: ListView(
         children: [
+          ListTile(
+            leading: const Icon(Icons.cloud_outlined),
+            title: Text(l10n.settingsAccount),
+            subtitle: Text(account?.email ?? l10n.settingsAccountSignedOut),
+            onTap: () => context.push(Routes.account),
+          ),
           _Header(l10n.settingsAppearance),
           ListTile(
             leading: const Icon(Icons.brightness_6_outlined),

@@ -34,7 +34,13 @@ Estimates assume 1 full-time developer; adjust to your pace.
 - [x] API: auth — email/password, Google ID-token sign-in (verifier + account linking), logout, password reset, per-device tokens, rate limits, app-version gate (FR-B2)
 - [x] API: sync push/pull — per-note versions, conflicts, per-user change feed (sharing-ready fan-out), tombstones + purge, colour labels (FR-B3, B4)
 - [x] API: master-key storage with optimistic concurrency (FR-S5), account deletion (FR-B6), device list/revoke
-- [ ] App: account screens (sign in / sign up / Google), sync engine (outbox, push/pull, conflict copies), key sync, sync status (FR-B2..B5, B8..B10)
+- [x] App: email account screen (sign in / create / forgot / sign out keep-or-remove / delete), sync status + Sync now (FR-B2, B5, B6, B10)
+- [x] App: sync engine — dirty outbox, batched push, per-record conflicts → conflicted copy, paged pull, purge tombstones, colour labels; runs after edits (3 s), on start/resume, every 5 min (FR-B3, B4)
+- [x] App: first sign-in merge, new-device restore, different-account re-id (FR-B8, B9)
+- [x] App: master-key sync (adopt / upload / password changed elsewhere) + "different master password" resolution (FR-S5)
+- [x] Local DB schema v2 (`purged`) with generated migration test
+- [x] Verified end-to-end: Dart engine ↔ real Laravel + MySQL (`test/e2e`), and account creation + sync in a real browser
+- [ ] App: Google sign-in button (needs OAuth client IDs; API side ready)
 - [ ] Export as .txt/.json zip (FR-B7)
 - **Needs your input:**
   - [ ] Google Cloud OAuth client IDs (Android + web) → `GOOGLE_CLIENT_IDS` in api/.env

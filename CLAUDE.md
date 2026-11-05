@@ -49,6 +49,8 @@ php artisan migrate
 - Widget tests: use `test/helpers/pump_app.dart` (`pumpApp`, `settle`, `dbWrite`) — in-memory DB, fake secure store, fast KDF.
 - Drift + fake async: read/write the DB from a test only inside `tester.runAsync`, ONE write per call (a live UI query re-runs between writes and deadlocks otherwise).
 - Never `pumpAndSettle` while a spinner can be visible — use `settle()`.
+- API end-to-end: `(cd api && php artisan serve --port=8001) &` then `HUENOTE_E2E_API=http://127.0.0.1:8001/api/v1 flutter test test/e2e` (skipped otherwise; it deletes its test account).
+- Sync engine tests use `test/features/sync/fake_server.dart` — keep its rules identical to `api/app/Services/SyncService.php`.
 - Real-browser smoke test: build web, serve `build/web`, drive headless Chrome over CDP (needs `--enable-unsafe-swiftshader`); headless Brave hangs in this environment.
 
 ## Before saying a task is done

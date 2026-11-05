@@ -20,4 +20,6 @@ class KeyMaterialStore {
 
   Future<void> write(KeyMaterial m) =>
       _store.write(_key, jsonEncode(m.toJson()));
+
+  Future<void> clear() => _store.delete(_key);
 }

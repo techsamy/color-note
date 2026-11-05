@@ -27,6 +27,7 @@ final class ColorLabelsRepositoryImpl implements ColorLabelsRepository {
           color: Value(color.value),
           label: label.trim(),
           updatedAt: _clock.now().millisecondsSinceEpoch,
+          dirty: const Value(true),
         ),
       );
 

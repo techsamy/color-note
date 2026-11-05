@@ -167,7 +167,9 @@ Designed now so that **note sharing (§3.5) can be added later without redesigni
    - Else → **conflict**: server returns its copy; client keeps the server copy as the note and saves its local edits as a **new note** `"<title> (conflicted copy – <device>, <date>)"`. No silent loss.
 2. **Pull**: `GET /api/v1/sync/pull?cursor=<seq>&limit=500` → feed entries with `seq > cursor` (latest state of each changed note), plus `next_cursor`, `has_more`.
 3. Apply pulled changes in one transaction; skip records that are locally dirty (they'll conflict on next push).
-4. Repeat until `has_more=false`. Triggers: app start, resume, after local edit (debounced 5 s), connectivity regained, every 30 min via WorkManager.
+4. Repeat until `has_more=false`. Triggers (implemented): app start, resume, 3 s after a local edit, every 5 min while open, "Sync now". Planned with the phone work: WorkManager background sync, connectivity-regained trigger.
+5. **Delete forever** of a synced note leaves a local `purged` tombstone (content wiped) that is pushed with `purged: true`, then removed; devices pulling it delete the note.
+6. Code: `app/lib/features/sync/` (engine, store, key sync) ↔ `api/app/Services/SyncService.php`.
 
 ### 3.4 Master password & locked notes (works across devices)
 Key hierarchy — a random key encrypts notes; the password only *wraps* that key:

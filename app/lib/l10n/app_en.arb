@@ -12,7 +12,13 @@
   "emptyArchiveBody": "Archived notes are hidden from your main list but kept safe here.",
   "emptyTrashTitle": "Trash is empty",
   "emptyTrashBody": "Deleted notes stay here for {days} days before they are removed.",
-  "@emptyTrashBody": {"placeholders": {"days": {"type": "int"}}},
+  "@emptyTrashBody": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "emptyTrashBodyForever": "Deleted notes stay here until you empty the trash.",
   "emptyFilterTitle": "No notes in these colours",
   "emptySearchTitle": "No matches",
@@ -28,9 +34,21 @@
   "addItem": "Add item",
   "itemHint": "List item",
   "checkedItems": "{count, plural, =1{1 checked item} other{{count} checked items}}",
-  "@checkedItems": {"placeholders": {"count": {"type": "int"}}},
+  "@checkedItems": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "selectedCount": "{count} selected",
-  "@selectedCount": {"placeholders": {"count": {"type": "int"}}},
+  "@selectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "actionPin": "Pin",
   "actionUnpin": "Unpin",
   "actionArchive": "Archive",
@@ -63,22 +81,64 @@
   "sortTitle": "Title",
   "sortColor": "Colour",
   "movedToTrash": "{count, plural, =1{Note moved to trash} other{{count} notes moved to trash}}",
-  "@movedToTrash": {"placeholders": {"count": {"type": "int"}}},
+  "@movedToTrash": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "archived": "{count, plural, =1{Note archived} other{{count} notes archived}}",
-  "@archived": {"placeholders": {"count": {"type": "int"}}},
+  "@archived": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "unarchived": "{count, plural, =1{Note unarchived} other{{count} notes unarchived}}",
-  "@unarchived": {"placeholders": {"count": {"type": "int"}}},
+  "@unarchived": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "restored": "{count, plural, =1{Note restored} other{{count} notes restored}}",
-  "@restored": {"placeholders": {"count": {"type": "int"}}},
+  "@restored": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "deleteForeverConfirm": "{count, plural, =1{Delete this note forever?} other{Delete {count} notes forever?}}",
-  "@deleteForeverConfirm": {"placeholders": {"count": {"type": "int"}}},
+  "@deleteForeverConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "emptyTrashConfirm": "Delete all notes in the trash forever?",
   "cannotUndo": "This can't be undone.",
   "noteInTrash": "This note is in the trash.",
   "deletedOn": "Deleted {date}",
-  "@deletedOn": {"placeholders": {"date": {"type": "String"}}},
+  "@deletedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "editedOn": "Edited {date}",
-  "@editedOn": {"placeholders": {"date": {"type": "String"}}},
+  "@editedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "lockedNote": "Locked note",
   "lockedNoteBody": "Enter your master password to view this note.",
   "noteDuplicated": "Note duplicated",
@@ -108,12 +168,24 @@
   "settingsCheckedToBottom": "Move checked items to bottom",
   "settingsTrashRetention": "Empty trash automatically",
   "retentionDays": "After {days} days",
-  "@retentionDays": {"placeholders": {"days": {"type": "int"}}},
+  "@retentionDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "retentionNever": "Never",
   "settingsColorLabels": "Colour labels",
   "settingsColorLabelsHint": "Name your colours, e.g. Red = Work",
   "colorLabelHint": "Label for {color}",
-  "@colorLabelHint": {"placeholders": {"color": {"type": "String"}}},
+  "@colorLabelHint": {
+    "placeholders": {
+      "color": {
+        "type": "String"
+      }
+    }
+  },
   "settingsSecurity": "Security",
   "settingsMasterPasswordSet": "Set master password",
   "settingsMasterPasswordSetHint": "Needed to lock notes",
@@ -121,14 +193,26 @@
   "settingsMasterPasswordForgot": "Forgot master password",
   "settingsAutoLock": "Lock again after",
   "minutes": "{count, plural, =1{1 minute} other{{count} minutes}}",
-  "@minutes": {"placeholders": {"count": {"type": "int"}}},
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "settingsLockNow": "Lock notes now",
   "notesLocked": "Locked notes are locked",
   "settingsBackup": "Backup & restore",
   "settingsBackupHint": "Encrypted backup file",
   "settingsAbout": "About",
   "settingsVersion": "Version {version}",
-  "@settingsVersion": {"placeholders": {"version": {"type": "String"}}},
+  "@settingsVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "masterPasswordSetupTitle": "Set master password",
   "masterPasswordChangeTitle": "Change master password",
   "masterPasswordRecoverTitle": "Reset with recovery key",
@@ -138,7 +222,13 @@
   "confirmPassword": "Confirm password",
   "recoveryKey": "Recovery key",
   "passwordTooShort": "Use at least {min} characters",
-  "@passwordTooShort": {"placeholders": {"min": {"type": "int"}}},
+  "@passwordTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
   "passwordsDontMatch": "Passwords don't match",
   "wrongPassword": "Wrong password",
   "wrongRecoveryKey": "Wrong recovery key",
@@ -165,9 +255,77 @@
   "backupWrongPassword": "Wrong backup password",
   "restoreDone": "Restore complete",
   "restoreSummary": "Added {added}, updated {updated}, unchanged {skipped}.",
-  "@restoreSummary": {"placeholders": {"added": {"type": "int"}, "updated": {"type": "int"}, "skipped": {"type": "int"}}},
+  "@restoreSummary": {
+    "placeholders": {
+      "added": {
+        "type": "int"
+      },
+      "updated": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "int"
+      }
+    }
+  },
   "restoreNeedsOldMasterPassword": "This backup has locked notes from another device. Enter the master password used there.",
   "oldMasterPassword": "Master password from the backup",
   "restoreWorking": "Restoring…",
-  "backupWorking": "Creating backup…"
+  "backupWorking": "Creating backup…",
+  "settingsAccount": "Account & sync",
+  "settingsAccountSignedOut": "Optional — back up and sync across devices",
+  "accountTitle": "Account & sync",
+  "accountIntro": "Sign in to back up your notes and keep them in sync on all your devices. HueNote works fully without an account.",
+  "accountSignInTab": "Sign in",
+  "accountCreateTab": "Create account",
+  "email": "Email",
+  "password": "Password",
+  "nameOptional": "Name (optional)",
+  "accountSignIn": "Sign in",
+  "accountCreate": "Create account",
+  "forgotAccountPassword": "Forgot password?",
+  "resetEmailSent": "If an account exists for that email, a reset link is on its way.",
+  "invalidEmail": "Enter a valid email",
+  "networkError": "Can't reach the server. Check your connection and try again.",
+  "signedInAs": "Signed in as {email}",
+  "@signedInAs": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "syncNow": "Sync now",
+  "syncing": "Syncing…",
+  "lastSynced": "Last synced {time}",
+  "@lastSynced": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "neverSynced": "Not synced yet",
+  "syncFailed": "Sync failed: {message}",
+  "@syncFailed": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "keyMismatchTitle": "Different master password",
+  "keyMismatchBody": "Your account already uses a master password from another device. Locked notes from this device aren't synced until you enter it here.",
+  "keyMismatchAction": "Enter account master password",
+  "accountMasterPassword": "Account master password",
+  "keyMismatchResolved": "Locked notes now use your account master password",
+  "signOut": "Sign out",
+  "signOutTitle": "Sign out?",
+  "signOutBody": "Your notes are safe in your account. What should happen to the notes on this device?",
+  "signOutRemove": "Remove from this device",
+  "signOutKeep": "Keep on this device",
+  "deleteAccount": "Delete account",
+  "deleteAccountBody": "This permanently deletes your account and every note stored on our server. Notes on this device are kept as offline notes.",
+  "deleteAccountConfirm": "Delete my account",
+  "accountDeleted": "Account deleted"
 }
