@@ -10,6 +10,7 @@ use App\Http\Requests\V1\KeysRequest;
 use App\Http\Resources\V1\DeviceResource;
 use App\Http\Resources\V1\UserResource;
 use App\Models\User;
+use App\Services\AccountService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -63,7 +64,7 @@ final class AccountController extends Controller
      * Deletes the account and all server data (Play policy). Requires the
      * password, or a fresh Google ID token for Google-only accounts.
      */
-    public function destroy(Request $request, GoogleIdTokenVerifier $verifier): Response
+    public function destroy(Request $request, GoogleIdTokenVerifier $verifier, AccountService $accounts): Response
     {
         $user = $this->user($request);
         if ($user->password !== null) {
@@ -79,11 +80,7 @@ final class AccountController extends Controller
             }
         }
 
-        DB::transaction(function () use ($user): void {
-            $user->tokens()->delete();
-            // FK cascades remove devices, notes, memberships, feed, labels.
-            $user->delete();
-        });
+        $accounts->delete($user);
 
         return response()->noContent();
     }

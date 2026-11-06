@@ -42,16 +42,18 @@ Estimates assume 1 full-time developer; adjust to your pace.
 - [x] Verified end-to-end: Dart engine ↔ real Laravel + MySQL (`test/e2e`), and account creation + sync in a real browser
 - [ ] App: Google sign-in button (needs OAuth client IDs; API side ready)
 - [x] Export as .txt/.json zip (FR-B7) — Backup screen; locked/trashed notes excluded
-- **Small website** (served by the Laravel API on the same domain as Blade pages, matching the app's colours, with feature tests):
-  - [ ] Privacy policy `/privacy`, written from what the app actually does: no ads or tracking, locked notes encrypted end-to-end, what sync stores. **Required by Play.**
-  - [ ] Delete-account page `/delete-account`: request deletion without the app (sign in, confirm, revoke tokens). **Required by Play** for apps with accounts (FR-B6).
-  - [ ] Reset-password page `/reset-password`: the target of the reset email link (`frontend_url`)
-  - [ ] Home page (what the app is + Play Store button), terms `/terms`, support/contact `/support`
+- **Small website** (served by the Laravel API on the same domain as Blade pages, matching the app's colours, with feature tests) — docs/03 §4.4:
+  - [x] Privacy policy `/privacy`, written from what the app actually does: no ads or tracking, locked notes encrypted end-to-end, what sync stores. **Required by Play.**
+  - [x] Delete-account page `/delete-account`: request deletion without the app (sign in, confirm, revoke tokens). **Required by Play** for apps with accounts (FR-B6).
+  - [x] Reset-password page `/reset-password`: the target of the reset email link (`frontend_url`)
+  - [x] Home page (what the app is + real app screenshots + Play Store button), terms `/terms`, support/contact `/support`
+  - [x] Verified in headless Chrome (desktop + phone width, light + dark, no horizontal overflow) and a real CSRF form post
 - **Needs your input:**
   - [ ] Google Cloud OAuth client IDs (Android + web) → `GOOGLE_CLIENT_IDS` in api/.env
   - [ ] Email sending (SMTP / Mailgun etc.) for password-reset mails → `MAIL_*` in api/.env
   - [ ] Hosting for the API (this server vs VPS) + domain → staging + prod, backups, monitoring
-  - [ ] Contact/support email, final name + domain for the website pages
+  - [ ] Publisher name for the legal pages → `HUENOTE_PUBLISHER` (support email is configurable via `HUENOTE_SUPPORT_EMAIL`; currently your Gmail)
+  - [ ] Final name + domain; Play Store link → `HUENOTE_PLAY_STORE_URL` once live
 - [ ] Closed testing 14 days → production
 
 ## Phase 3 — v1.1 (weeks 11–14)

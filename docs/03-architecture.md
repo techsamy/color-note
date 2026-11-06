@@ -250,6 +250,23 @@ api/                                   # Laravel project root
 ### 4.3 Request lifecycle
 `Nginx → PHP-FPM → Laravel → middleware (auth:sanctum, throttle, force-json) → FormRequest → Controller (thin) → Service → Eloquent/DB transaction → Resource → JSON`
 
+### 4.4 Public website
+The same Laravel app serves a small website (Blade views in `resources/views/site/`, plain CSS in
+`public/css/site.css` — no build step, no third-party requests, no analytics):
+
+| Path | Purpose |
+|---|---|
+| `/` | Home page with real app screenshots (`public/images/screens/*.webp`) |
+| `/privacy`, `/terms`, `/support` | Privacy policy (Play requirement), terms, FAQ + contact |
+| `/delete-account` | Account deletion without the app (Play requirement, FR-B6) — email + password; Google-only accounts are told to use the app or email support |
+| `/reset-password` | Target of the password-reset email (`FRONTEND_URL` + `/reset-password?token=…&email=…`) |
+
+The API and the website share `App\Services\AccountService` (delete account, reset password) so both paths
+behave identically. Web forms use the `web` middleware (session + CSRF) and the `auth` rate limiter.
+Contact email, publisher name, country and Play Store link come from `config/huenote.php` → `site`
+(`HUENOTE_SUPPORT_EMAIL`, `HUENOTE_PUBLISHER`, `HUENOTE_COUNTRY`, `HUENOTE_PLAY_STORE_URL`).
+Screenshots are regenerated from the real app with `app/tool/screenshots/main_demo.dart` (see docs/11).
+
 ## 5. Deployment
 
 ```mermaid

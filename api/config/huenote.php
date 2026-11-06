@@ -13,4 +13,16 @@ return [
         'calendar' => (bool) env('HUENOTE_FEATURE_CALENDAR', false),
         'sharing' => (bool) env('HUENOTE_FEATURE_SHARING', false),
     ],
+
+    // Public website (privacy policy, terms, support, account deletion, password reset).
+    'site' => [
+        'support_email' => env('HUENOTE_SUPPORT_EMAIL', 'vivekary@gmail.com'),
+        // Shown on the legal pages as the developer. Empty = not shown.
+        'publisher' => env('HUENOTE_PUBLISHER', ''),
+        'country' => env('HUENOTE_COUNTRY', 'India'),
+        // Set once the app is live on Google Play; until then the site says "Coming soon".
+        'play_store_url' => env('HUENOTE_PLAY_STORE_URL', ''),
+        // Bump when the privacy policy or terms change.
+        'legal_updated' => '6 November 2026',
+    ],
 ];

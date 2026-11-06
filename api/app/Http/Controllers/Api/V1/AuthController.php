@@ -12,6 +12,7 @@ use App\Http\Requests\V1\LoginRequest;
 use App\Http\Requests\V1\RegisterRequest;
 use App\Http\Resources\V1\UserResource;
 use App\Models\User;
+use App\Services\AccountService;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -102,26 +103,19 @@ final class AuthController extends Controller
         return response()->noContent();
     }
 
-    public function resetPassword(Request $request): Response
+    public function resetPassword(Request $request, AccountService $accounts): Response
     {
         $request->validate([
             'email' => ['required', 'email'],
             'token' => ['required', 'string'],
             'password' => ['required', 'string', PasswordRule::min(8)],
         ]);
-        $status = Password::reset(
-            [
-                'email' => strtolower(trim((string) $request->input('email'))),
-                'token' => (string) $request->input('token'),
-                'password' => (string) $request->input('password'),
-            ],
-            function (User $user, string $password): void {
-                $user->password = $password;
-                $user->save();
-                $user->tokens()->delete(); // sign out everywhere
-            },
+        $ok = $accounts->resetPassword(
+            (string) $request->input('email'),
+            (string) $request->input('token'),
+            (string) $request->input('password'),
         );
-        if ($status !== Password::PASSWORD_RESET) {
+        if (! $ok) {
             throw ValidationException::withMessages(['token' => ['This reset link is invalid or has expired.']]);
         }
 

@@ -4,8 +4,11 @@ Offline-first, colour-coded notes & checklists for Android — inspired by Color
 
 | Part | Stack | Folder |
 |---|---|---|
-| Mobile app | Flutter (Android first, iOS-ready) · Riverpod · Drift/SQLite | `app/` *(to be scaffolded)* |
-| Backend | Laravel · MySQL · Redis · Sanctum | `api/` *(to be scaffolded)* |
+| Mobile app | Flutter (Android first, iOS-ready) · Riverpod · Drift/SQLite | `app/` |
+| Backend | Laravel · MySQL · Sanctum | `api/` |
+| Website | Blade pages served by the backend (home, privacy, terms, support, delete account, reset password) | `api/resources/views/site/` |
+
+**How to run, stop and test everything:** [docs/11-run-and-test.md](docs/11-run-and-test.md)
 
 ## Documentation
 | # | Doc | Purpose |
@@ -20,5 +23,6 @@ Offline-first, colour-coded notes & checklists for Android — inspired by Color
 | 08 | [Dev workflow](docs/08-development-workflow.md) | Git, testing, CI, release |
 | 09 | [Roadmap](docs/09-roadmap.md) | Phases & milestones |
 | 10 | [Coding standards](docs/10-coding-standards.md) | Dart + PHP rules |
+| 11 | [Run & test](docs/11-run-and-test.md) | Start/stop services, run every test, regenerate screenshots |
 | — | [ADRs](docs/adr/) | Architecture decisions |
 | — | [CLAUDE.md](CLAUDE.md) | Project rules for AI assistants |

@@ -41,6 +41,7 @@ php artisan migrate
 ## Stack notes
 - Flutter 3.47 / Dart 3.13 — `dart fix` prefers `const new(...)` constructor syntax; follow the analyzer.
 - Laravel 12 on PHP 8.2. API routes in `api/routes/api.php` under `v1`; errors rendered by `App\Support\ApiErrorRenderer`.
+- Public website (privacy, terms, support, delete-account, reset-password) = Blade views in `api/resources/views/site/` + plain `public/css/site.css` (no build step, no third-party requests). Legal text must match what the app really does — update it when data handling changes. Run/stop/test steps: `docs/11-run-and-test.md`.
 - Generated Dart code is gitignored — run codegen after pulling.
 - Dev preview runs as **Flutter web in Brave** (`app/scripts/brave_mobile.sh`). Android-only features (notifications, alarms, widgets, biometrics, share intents) must sit behind a domain interface with a web no-op/fallback so the web preview keeps running; verify them on a real phone.
 - `app/web/sqlite3.wasm` + `drift_worker.js` must match the resolved `sqlite3` / `drift` versions in pubspec.lock — re-download when upgrading drift.
